@@ -28,8 +28,8 @@ node demo.js
 ## Roadmap
 
 ### MVP (Current)
-- [] Core notification system
-- [] Email simulation
+- [ ] Core notification system
+- [ ] Email simulation
 
 ### Next Steps
 - [ ] Web interface for adding birthdays

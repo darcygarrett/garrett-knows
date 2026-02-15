@@ -7,12 +7,16 @@
     "dev": "node demo.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["birthday", "notifications", "reminder"],
+  "keywords": [
+    "birthday",
+    "notifications",
+    "reminder"
+  ],
   "author": "Darcy Garrett",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
     "node-cron": "^3.0.3",
-    "nodemailer": "^6.9.7"
+    "nodemailer": "^8.0.1"
   }
 }

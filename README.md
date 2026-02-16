@@ -14,7 +14,11 @@ A personal helper app for staying connected with your people.
 ```bash
 npm install
 
+# Run demo
 node demo.js
+
+# Or start the web server
+node server.js
 ```
 
 ## How It Works
@@ -31,6 +35,7 @@ node demo.js
 - [x] Core notification system
 - [x] Email simulation
 - [x] JSON file persistence
+- [x] Basic web server with API
 
 ### Next Steps
 - [ ] Web interface for adding birthdays
@@ -54,6 +59,9 @@ node demo.js
 ```bash
 # Run demo
 npm run dev
+
+# Start web server
+node server.js
 
 # Run tests (coming soon)
 npm test

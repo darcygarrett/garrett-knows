@@ -1,12 +1,13 @@
+const DataStore = require('./DataStore');
+
 class BirthdayNotificationCenter {
   constructor() {
     this.observers = [];
     this.users = new Map();
     this.birthdays = new Map();
     this.subscriptions = new Map();
-    
-    // prevent spam
-    this.notifiedToday = new Set();
+    this.notifiedToday = new Set(); // prevent spam
+    this.dataStore = new DataStore();
   }
 
   subscribe(notificationHandler) {
@@ -165,6 +166,16 @@ class BirthdayNotificationCenter {
         data.subscriptions.map(([userId, arr]) => [userId, new Set(arr)])
       );
     }
+  }
+
+  async saveData() {
+    const data = this.exportData();
+    await this.dataStore.save(data);
+  }
+
+  async loadData() {
+    const data = await this.dataStore.load();
+    this.importData(data);
   }
 }
 

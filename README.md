@@ -14,11 +14,15 @@ A personal helper app for staying connected with your people.
 ```bash
 npm install
 
-# Run demo
-node demo.js
-
-# Or start the web server
+# start the web server
 node server.js
+```
+
+Then open http://localhost:3000 in your browser.
+
+You can also run the demo script:
+```bash
+npm run dev
 ```
 
 ## How It Works
@@ -36,9 +40,11 @@ node server.js
 - [x] Email simulation
 - [x] JSON file persistence
 - [x] Basic web server with API
+- [x] Web interface for managing birthdays
+- [x] Full CRUD operations
+- [x] Birthday sorting and countdown
 
 ### Next Steps
-- [ ] Web interface for adding birthdays
 - [ ] Real email sending (Nodemailer)
 - [ ] Daily cron job
 - [ ] Shared family groups
@@ -55,16 +61,12 @@ node server.js
 *Coming soon*
 
 ## Development
-
 ```bash
-# Run demo
-npm run dev
-
 # Start web server
 node server.js
 
-# Run tests (coming soon)
-npm test
+# Run demo/test
+npm run dev
 ```
 
 ## License

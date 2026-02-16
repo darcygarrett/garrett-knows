@@ -1,4 +1,4 @@
-const DataStore = require('./DataStore');
+const DataStore = require("./DataStore");
 
 class BirthdayNotificationCenter {
   constructor() {
@@ -13,12 +13,14 @@ class BirthdayNotificationCenter {
   subscribe(notificationHandler) {
     this.observers.push(notificationHandler);
     return () => {
-      this.observers = this.observers.filter(obs => obs !== notificationHandler);
+      this.observers = this.observers.filter(
+        (obs) => obs !== notificationHandler,
+      );
     };
   }
 
   notify(birthday, subscribers) {
-    this.observers.forEach(observer => {
+    this.observers.forEach((observer) => {
       observer(birthday, subscribers);
     });
   }
@@ -28,10 +30,10 @@ class BirthdayNotificationCenter {
       id: userId,
       name: userData.name,
       email: userData.email,
-      phone: userData.phone || '',
-      preferences: userData.preferences || { emailNotifications: true }
+      phone: userData.phone || "",
+      preferences: userData.preferences || { emailNotifications: true },
     });
-    
+
     if (!this.subscriptions.has(userId)) {
       this.subscriptions.set(userId, new Set());
     }
@@ -44,9 +46,9 @@ class BirthdayNotificationCenter {
       date: birthdayData.date, // Format: 'MM-DD'
       month: birthdayData.month,
       day: birthdayData.day,
-      relationship: birthdayData.relationship || '',
+      relationship: birthdayData.relationship || "",
       ownerId: birthdayData.ownerId, // User who created this birthday
-      createdAt: new Date().toISOString()
+      createdAt: new Date().toISOString(),
     });
   }
 
@@ -65,7 +67,9 @@ class BirthdayNotificationCenter {
 
   getUserSubscriptions(userId) {
     const subscriptionSet = this.subscriptions.get(userId) || new Set();
-    return [...subscriptionSet].map(birthdayId => this.birthdays.get(birthdayId));
+    return [...subscriptionSet].map((birthdayId) =>
+      this.birthdays.get(birthdayId),
+    );
   }
 
   /**
@@ -73,8 +77,8 @@ class BirthdayNotificationCenter {
    */
   checkTodaysBirthdays() {
     const today = new Date();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
     const todayKey = `${month}-${day}`;
 
     console.log(`\nChecking birthdays for ${todayKey}...`);
@@ -82,22 +86,22 @@ class BirthdayNotificationCenter {
     let birthdaysFound = 0;
 
     this.birthdays.forEach((birthday, birthdayId) => {
-      const birthdayKey = `${String(birthday.month).padStart(2, '0')}-${String(birthday.day).padStart(2, '0')}`;
-      
+      const birthdayKey = `${String(birthday.month).padStart(2, "0")}-${String(birthday.day).padStart(2, "0")}`;
+
       // If it's their birthday today and we haven't notified yet
       if (birthdayKey === todayKey && !this.notifiedToday.has(birthdayId)) {
         birthdaysFound++;
-        
+
         // Find all subscribers to this birthday
         const subscribers = this.getSubscribersForBirthday(birthdayId);
-        
+
         if (subscribers.length > 0) {
           console.log(`\nIt's ${birthday.name}'s birthday!`);
           console.log(`   Notifying ${subscribers.length} subscriber(s)...`);
-          
+
           // Notify all observers (email handlers, etc.)
           this.notify(birthday, subscribers);
-          
+
           // Mark as notified today
           this.notifiedToday.add(birthdayId);
         }
@@ -105,7 +109,7 @@ class BirthdayNotificationCenter {
     });
 
     if (birthdaysFound === 0) {
-      console.log('   No birthdays today.');
+      console.log("   No birthdays today.");
     }
 
     return birthdaysFound;
@@ -116,7 +120,7 @@ class BirthdayNotificationCenter {
    */
   getSubscribersForBirthday(birthdayId) {
     const subscribers = [];
-    
+
     this.subscriptions.forEach((birthdaySet, userId) => {
       if (birthdaySet.has(birthdayId)) {
         const user = this.users.get(userId);
@@ -125,7 +129,7 @@ class BirthdayNotificationCenter {
         }
       }
     });
-    
+
     return subscribers;
   }
 
@@ -134,7 +138,7 @@ class BirthdayNotificationCenter {
    */
   resetDailyNotifications() {
     this.notifiedToday.clear();
-    console.log('Daily notification tracking reset');
+    console.log("Daily notification tracking reset");
   }
 
   /**
@@ -144,10 +148,9 @@ class BirthdayNotificationCenter {
     return {
       users: Array.from(this.users.entries()),
       birthdays: Array.from(this.birthdays.entries()),
-      subscriptions: Array.from(this.subscriptions.entries()).map(([userId, set]) => [
-        userId,
-        Array.from(set)
-      ])
+      subscriptions: Array.from(this.subscriptions.entries()).map(
+        ([userId, set]) => [userId, Array.from(set)],
+      ),
     };
   }
 
@@ -163,7 +166,7 @@ class BirthdayNotificationCenter {
     }
     if (data.subscriptions) {
       this.subscriptions = new Map(
-        data.subscriptions.map(([userId, arr]) => [userId, new Set(arr)])
+        data.subscriptions.map(([userId, arr]) => [userId, new Set(arr)]),
       );
     }
   }

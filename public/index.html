@@ -1,27 +1,45 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Garrett Knows - Birthday Tracker</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <h1>Garrett Knows</h1>
-        <h2>Upcoming Birthdays</h2>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Garrett Knows - Birthday Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Garrett Knows</h1>
+    <h2>Upcoming Birthdays</h2>
 
-        <div class="add-birthday-form">
-            <h3>Add New Birthday</h3>
-            <form id="birthdayForm">
-                <input type="text" id="name" placeholder="Name" required>
-                <input type="text" id="relationship" placeholder="Relationship (optional)">
-                <input type="number" id="month" placeholder="Month (1-12)" min="1" max="12" required>
-                <input type="number" id="day" placeholder="Day (1-31)" min="1" max="31" required>
-                <button type="submit">Add Birthday</button>
-            </form>
-        </div>
-        
-        <div id="birthdays">Loading...</div>    
-        <script src="app.js"></script>
-    </body>
+    <div class="add-birthday-form">
+      <h3>Add New Birthday</h3>
+      <form id="birthdayForm">
+        <input type="text" id="name" placeholder="Name" required />
+        <input
+          type="text"
+          id="relationship"
+          placeholder="Relationship (optional)"
+        />
+        <input
+          type="number"
+          id="month"
+          placeholder="Month (1-12)"
+          min="1"
+          max="12"
+          required
+        />
+        <input
+          type="number"
+          id="day"
+          placeholder="Day (1-31)"
+          min="1"
+          max="31"
+          required
+        />
+        <button type="submit">Add Birthday</button>
+      </form>
+    </div>
+
+    <div id="birthdays">Loading...</div>
+    <script src="app.js"></script>
+  </body>
 </html>

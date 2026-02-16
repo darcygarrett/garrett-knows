@@ -7,7 +7,7 @@
 class EmailNotifier {
   constructor(config = {}) {
     this.enabled = config.enabled || false;
-    this.from = config.from || 'noreply@garrett-knows.com';
+    this.from = config.from || "noreply@garrett-knows.com";
   }
 
   /**
@@ -19,7 +19,7 @@ class EmailNotifier {
 
     if (this.enabled) {
       // TODO: Real email sending with Nodemailer
-      console.log('   [EMAIL WOULD BE SENT]');
+      console.log("   [EMAIL WOULD BE SENT]");
     } else {
       // Simulation for MVP
       console.log(`\n   Email Simulation`);
@@ -42,7 +42,7 @@ Hi ${subscriber.name}!
 
 Just a friendly reminder that today is ${birthday.name}'s birthday!
 
-${birthday.relationship ? `Relationship: ${birthday.relationship}` : ''}
+${birthday.relationship ? `Relationship: ${birthday.relationship}` : ""}
 
 Don't forget to wish them a happy birthday!
 
@@ -55,12 +55,14 @@ Garrett Knows
    * Observer pattern handler - called when birthday notification triggered
    */
   handleNotification = async (birthday, subscribers) => {
-    console.log(`\n   Sending ${subscribers.length} email(s) for ${birthday.name}...`);
-    
+    console.log(
+      `\n   Sending ${subscribers.length} email(s) for ${birthday.name}...`,
+    );
+
     for (const subscriber of subscribers) {
       await this.sendBirthdayNotification(birthday, subscriber);
     }
-  }
+  };
 }
 
 module.exports = EmailNotifier;

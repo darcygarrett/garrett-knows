@@ -35,11 +35,28 @@
                             return;
                         }
 
-                        container.innerHTML = birthdays.map(bday => `
+                        // Sort birthdays by next occurrence
+                        const today = new Date();
+                        const sortedBirthdays = birthdays.map(bday => {
+                            // Calculate next occurrence
+                            const thisYear = today.getFullYear();
+                            let nextDate = new Date(thisYear, bday.month - 1, bday.day);
+                            
+                            // If birthday already passed this year, use next year
+                            if (nextDate < today) {
+                                nextDate = new Date(thisYear + 1, bday.month - 1, bday.day);
+                            }
+                            
+                            const daysUntil = Math.ceil((nextDate - today) / (1000 * 60 * 60 * 24));
+                            
+                            return { ...bday, daysUntil, nextDate };
+                        }).sort((a, b) => a.daysUntil - b.daysUntil);
+
+                        container.innerHTML = sortedBirthdays.map(bday => `
                             <div id="bday-${bday.id}">
                                 <div class="birthday-display">
                                     <h3>${bday.name}</h3>
-                                    <p>Date: ${bday.month}/${bday.day}</p>
+                                    <p>Date: ${bday.month}/${bday.day} ${bday.daysUntil === 0 ? '🎉 TODAY!' : `(in ${bday.daysUntil} day${bday.daysUntil === 1 ? '' : 's'})`}</p>
                                     ${bday.relationship ? `<p>Relationship: ${bday.relationship}</p>` : ''}
                                     <button class="edit-btn" data-id="${bday.id}">Edit</button>
                                     <button class="delete-btn" data-id="${bday.id}">Delete</button>
@@ -102,49 +119,49 @@
                 }
             });
 
-            // Handle edit button clicks// Handle edit button clicks
+            // Handle edit button clicks
             document.addEventListener('click', (e) => {
-              if (e.target.classList.contains('edit-btn')) {
-                const birthdayId = e.target.dataset.id;
-                const container = document.getElementById(`bday-${birthdayId}`);
-                container.querySelector('.birthday-display').style.display = 'none';
-                container.querySelector('.birthday-edit').style.display = 'block';
-              }
+                if (e.target.classList.contains('edit-btn')) {
+                    const birthdayId = e.target.dataset.id;
+                    const container = document.getElementById(`bday-${birthdayId}`);
+                    container.querySelector('.birthday-display').style.display = 'none';
+                    container.querySelector('.birthday-edit').style.display = 'block';
+                }
             });
 
             // Handle cancel button clicks
             document.addEventListener('click', (e) => {
-              if (e.target.classList.contains('cancel-btn')) {
-                const birthdayId = e.target.dataset.id;
-                const container = document.getElementById(`bday-${birthdayId}`);
-                container.querySelector('.birthday-display').style.display = 'block';
-                container.querySelector('.birthday-edit').style.display = 'none';
-              }
+                if (e.target.classList.contains('cancel-btn')) {
+                    const birthdayId = e.target.dataset.id;
+                    const container = document.getElementById(`bday-${birthdayId}`);
+                    container.querySelector('.birthday-display').style.display = 'block';
+                    container.querySelector('.birthday-edit').style.display = 'none';
+                }
             });
 
             // Handle save button clicks
             document.addEventListener('click', async (e) => {
-              if (e.target.classList.contains('save-btn')) {
-                const birthdayId = e.target.dataset.id;
-                const container = document.getElementById(`bday-${birthdayId}`);
-                
-                const formData = {
-                  name: container.querySelector('.edit-name').value,
-                  month: container.querySelector('.edit-month').value,
-                  day: container.querySelector('.edit-day').value,
-                  relationship: container.querySelector('.edit-relationship').value
-                };
+                if (e.target.classList.contains('save-btn')) {
+                    const birthdayId = e.target.dataset.id;
+                    const container = document.getElementById(`bday-${birthdayId}`);
+                    
+                    const formData = {
+                        name: container.querySelector('.edit-name').value,
+                        month: container.querySelector('.edit-month').value,
+                        day: container.querySelector('.edit-day').value,
+                        relationship: container.querySelector('.edit-relationship').value
+                    };
 
-                const response = await fetch(`/api/birthdays/${birthdayId}`, {
-                  method: 'PUT',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify(formData)
-                });
+                    const response = await fetch(`/api/birthdays/${birthdayId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
 
-                if (response.ok) {
-                  loadBirthdays();
+                    if (response.ok) {
+                        loadBirthdays();
+                    }
                 }
-              }
             });
         </script>
     </body>

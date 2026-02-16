@@ -30,10 +30,10 @@ node demo.js
 ### MVP (Current)
 - [x] Core notification system
 - [x] Email simulation
+- [x] JSON file persistence
 
 ### Next Steps
 - [ ] Web interface for adding birthdays
-- [ ] JSON file persistence
 - [ ] Real email sending (Nodemailer)
 - [ ] Daily cron job
 - [ ] Shared family groups

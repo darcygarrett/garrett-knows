@@ -67,6 +67,31 @@ app.delete('/api/birthdays/:id', async (req, res) => {
   res.json({ success: true });
 });
 
+// API endpoint to update a birthday
+app.put('/api/birthdays/:id', async (req, res) => {
+  const birthdayId = req.params.id;
+  const { name, month, day, relationship } = req.body;
+  
+  const birthday = birthdaySystem.birthdays.get(birthdayId);
+  
+  if (!birthday) {
+    return res.status(404).json({ error: 'Birthday not found' });
+  }
+  
+  // Update the birthday
+  birthday.name = name;
+  birthday.month = parseInt(month);
+  birthday.day = parseInt(day);
+  birthday.relationship = relationship;
+  
+  birthdaySystem.birthdays.set(birthdayId, birthday);
+  
+  // Save to file
+  await birthdaySystem.saveData();
+  
+  res.json({ success: true });
+});
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });

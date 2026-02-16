@@ -30,6 +30,7 @@ app.get('/api/birthdays', (req, res) => {
     res.json(birthdays);
 })
 
+// API endpoint to add a birthday
 app.post('/api/birthdays', async (req, res) => {
     const { name, month, day, relationship } = req.body;
     const birthdayId = `bday_${Date.now()}`;
@@ -46,6 +47,24 @@ app.post('/api/birthdays', async (req, res) => {
     await birthdaySystem.saveData();
 
     res.json({ success: true, birthdayId });
+});
+
+// API endpoint to delete a birthday
+app.delete('/api/birthdays/:id', async (req, res) => {
+  const birthdayId = req.params.id;
+  
+  // Delete the birthday
+  birthdaySystem.birthdays.delete(birthdayId);
+  
+  // Remove from all subscriptions
+  birthdaySystem.subscriptions.forEach((birthdaySet) => {
+    birthdaySet.delete(birthdayId);
+  });
+  
+  // Save to file
+  await birthdaySystem.saveData();
+  
+  res.json({ success: true });
 });
 
 app.listen(port, () => {

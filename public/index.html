@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Garrett Knows - Birthday Tracker</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <h1>Garrett Knows</h1>
+        <h2>Upcoming Birthdays</h2>
+
+        <div class="add-birthday-form">
+            <h3>Add New Birthday</h3>
+            <form id="birthdayForm">
+                <input type="text" id="name" placeholder="Name" required>
+                <input type="text" id="relationship" placeholder="Relationship (optional)">
+                <input type="number" id="month" placeholder="Month (1-12)" min="1" max="12" required>
+                <input type="number" id="day" placeholder="Day (1-31)" min="1" max="31" required>
+                <button type="submit">Add Birthday</button>
+            </form>
+        </div>
+        
+        <div id="birthdays">Loading...</div>
+            <script>
+            // Function to load and display birthdays
+            function loadBirthdays() {
+              fetch('/api/birthdays')
+                .then(res => res.json())
+                .then(birthdays => {
+                  const container = document.getElementById('birthdays');
+                  
+                  if (birthdays.length === 0) {
+                    container.innerHTML = '<p>No birthdays yet!</p>';
+                    return;
+                  }
+
+                  container.innerHTML = birthdays.map(bday => `
+                    <div>
+                      <h3>${bday.name}</h3>
+                      <p>Date: ${bday.month}/${bday.day}</p>
+                      ${bday.relationship ? `<p>Relationship: ${bday.relationship}</p>` : ''}
+                    </div>
+                  `).join('');
+                });
+            }
+
+            // Load birthdays on page load
+            loadBirthdays();
+
+            // Handle form submission
+            document.getElementById('birthdayForm').addEventListener('submit', async (e) => {
+              e.preventDefault();
+              
+              const formData = {
+                name: document.getElementById('name').value,
+                month: document.getElementById('month').value,
+                day: document.getElementById('day').value,
+                relationship: document.getElementById('relationship').value
+              };
+
+              const response = await fetch('/api/birthdays', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+              });
+
+              if (response.ok) {
+                // Clear the form
+                document.getElementById('birthdayForm').reset();
+                // Reload birthdays
+                loadBirthdays();
+              }
+            });
+        </script>
+    </body>
+</html>
